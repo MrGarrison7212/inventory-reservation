@@ -1,0 +1,28 @@
+@baseUrl = http://localhost:8080
+
+### Stock of product 1 (seeded with 10)
+GET {{baseUrl}}/api/products/1/stock
+
+### Reserve 3 -> 201
+POST {{baseUrl}}/api/reservations
+Content-Type: application/json
+
+{ "productId": 1, "quantity": 3 }
+
+### Too much -> 409
+POST {{baseUrl}}/api/reservations
+Content-Type: application/json
+
+{ "productId": 1, "quantity": 100 }
+
+### Unknown product -> 404
+POST {{baseUrl}}/api/reservations
+Content-Type: application/json
+
+{ "productId": 999, "quantity": 1 }
+
+### Invalid quantity -> 400
+POST {{baseUrl}}/api/reservations
+Content-Type: application/json
+
+{ "productId": 1, "quantity": 0 }
