@@ -1,0 +1,54 @@
+{
+  "info": {
+    "name": "Inventory Reservation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" }
+  ],
+  "item": [
+    {
+      "name": "Stock of product 1 (seeded with 10)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/products/1/stock"
+      }
+    },
+    {
+      "name": "Reserve 3 -> 201",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{ \"productId\": 1, \"quantity\": 3 }" },
+        "url": "{{baseUrl}}/api/reservations"
+      }
+    },
+    {
+      "name": "Too much -> 409",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{ \"productId\": 1, \"quantity\": 100 }" },
+        "url": "{{baseUrl}}/api/reservations"
+      }
+    },
+    {
+      "name": "Unknown product -> 404",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{ \"productId\": 999, \"quantity\": 1 }" },
+        "url": "{{baseUrl}}/api/reservations"
+      }
+    },
+    {
+      "name": "Invalid quantity -> 400",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{ \"productId\": 1, \"quantity\": 0 }" },
+        "url": "{{baseUrl}}/api/reservations"
+      }
+    }
+  ]
+}
