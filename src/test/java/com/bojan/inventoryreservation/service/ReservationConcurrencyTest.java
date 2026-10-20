@@ -77,6 +77,20 @@ class ReservationConcurrencyTest {
                 }
             }
 
+            int remainingStock = reservationService.getAvailableStock(product.getId());
+            long reservationsCreated = reservationRepository.count() - reservationsBefore;
+            System.out.printf("""
+
+                    ===== Concurrency test summary =====
+                    Threads:              %d
+                    Initial stock:        %d
+                    Successful:           %d
+                    Rejected (no stock):  %d
+                    Remaining stock:      %d
+                    Reservations created: %d
+                    ====================================
+                    %n""", THREADS, STOCK, successes, rejections, remainingStock, reservationsCreated);
+
             assertThat(successes).isEqualTo(STOCK);
             assertThat(rejections).isEqualTo(THREADS - STOCK);
             assertThat(reservationService.getAvailableStock(product.getId())).isZero();
